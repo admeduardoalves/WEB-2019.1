@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Tela de Login</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="index">Página Login</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item">
+	        <a class="nav-link" href="/pedido/carrinho">Carrinho de Compras</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/restaurante/logar">Login</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/restaurante/formulario">Cadastro</a>
+	      </li>
+	      <li class="nav-item">
+	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/cadastrarPratos">Cadastrar Pratos</a></td>
+	      </li>
+	      <li class="nav-item">
+	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/ListarPratos">Listar Pratos</a></td>
+	      </li>
+	    </ul>
+	 </div>
+</nav>
+
+<form class="text-center border border-light p-5" method="POST">
+<div class="panel panel-primary">
+    <div class="panel-heading">Login</div>
+    
+    <div class="panel-body">
+<div class="form-group"><br><br>
+
+    <input type="text" name="username" class="form-control mb-4" placeholder="Digite seu Login"> <br>
+
+    <input type="password" name="password" class="form-control mb-4" placeholder="Digite sua senha" > <br>
+
+    <input type="submit" value="Logar" class="btn btn-info btn-block my-4">
+    
+    <p>Não esta cadastrado?
+        <a href="formulario">Registe-se aqui!</a>
+    </p>
+
+    </div>
+   </div>
+  </div>
+</form>
+
+<script src="/js/bootstrap.min.js"> </script>
+</body>
+</html>

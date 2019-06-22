@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:th="http://www.thymeleaf.org">
+<!--  colocar isso em toda pagina onde houver regra de negocio. Mostrar algo espefico para um usuario e outro nao -->
+<head>
+<meta charset="UTF-8">
+<title>Cadastrar Pratos</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="index">Página Cadastro Prato</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item">
+	        <a class="nav-link" href="/pedido/carrinho">Carrinho de Compras</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/restaurante/logar">Login</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/restaurante/formulario">Cadastro</a>
+	      </li>
+	      <li class="nav-item">
+	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/cadastrarPratos">Cadastrar Pratos</a></td>
+	      </li>
+	      <li class="nav-item">
+	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/ListarPratos">Listar Pratos</a></td>
+	      </li>
+	    </ul>
+	 </div>
+</nav>
+
+	<!--             FORMULARIO DE CADASTRO               -->
+
+	<form action="/prato/cadastroDePratos" method="POST"
+		th:object="${prato}" enctype="multipart/form-data">
+
+		<div class="alert alert-success" role="alert"
+			th:if="${!#strings.isEmpty(mensagem)}">
+			<span th:text="${mensagem}"></span>
+		</div>
+
+		<div class="alert alert-danger" role="alert"
+			th:if="${#fields.hasAnyErrors()}">
+			<div th:each="detailedError : ${#fields.detailedErrors()}">
+				<span th:text="${detailedError.message}"></span>
+			</div>
+		</div>
+
+		<input type="hidden" th:field="*{codigo}" />
+		<div class="form-group">
+			<label class="col-md-1 control-label" for="Nome"> Nome do Prato: <h11>*</h11></label>
+			<div class="col-md-4">
+				<input id="Nome" placeholder="Descrição do Prato"
+					class="form-control input-md" type="text" th:field="*{nome}">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-md-1 control-label" for="Nome">Valor do Prato R$ <h11></h11></label>
+			<div class="col-md-2">
+				<input id="valor" placeholder="Valor do Prato"
+					class="form-control input-md" maxlength="2" pattern="[0-9]"
+					type="number" th:field="*{preco}">
+			</div>
+		</div>
+
+			<div class="form-group">
+				<label class="col-md-1 control-label" for="Nome">Imagem do Prato: <h11>*</h11></label>
+				<div class="col-md-1">
+					<input type="file" name="imagem"> <br>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="Cadastrar"></label>
+				<div class="col-md-8">
+					<br> <input id="Cadastrar" name="Cadastrar"
+						class="btn btn-success" type="submit" value="Cadastrar">
+					<button id="Cancelar" name="Cancelar" class="btn btn-danger"
+						type="Reset">Limpar</button>
+				</div>
+			</div>
+</form>
+
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,42 +1,64 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-xmlns:th="http://www.thymeleaf.org"> <!--  colocar isso em toda pagina onde houver regra de negocio. Mostrar algo espefico para um usuario e outro nao -->
+<html
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:th="http://www.thymeleaf.org">
+<!--  colocar isso em toda pagina onde houver regra de negocio. Mostrar algo espefico para um usuario e outro nao -->
 <head>
 <meta charset="UTF-8">
 <title>Página do carrinho</title>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="index">Página Inicial</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-  <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item">
-	        <a class="nav-link" href="/pedido/carrinho">MEU CARRINHO</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="/restaurante/logar">Login</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="/restaurante/formulario">Cadastro</a>
-	      </li>
-	      <li class="nav-item">
-	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/cadastrarPratos">Cadastrar Pratos</a></td>
-	      </li>
-	      <li class="nav-item">
-	        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="/prato/ListarPratos">Listar Pratos</a></td>
-	      </li>
-	    </ul>
-	 </div>
-</nav>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/restaurante/index">Página Inicial</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" href="/carrinho">MEU
+						CARRINHO</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/restaurante/logar">Login</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/restaurante/formulario">Cadastro</a></li>
+				<li class="nav-item">
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link"
+						href="/prato/cadastrarPratos">Cadastrar Pratos</a></td>
+				</li>
+				<li class="nav-item">
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link"
+						href="/prato/ListarPratos">Listar Pratos</a></td>
+				</li>
+				<li class="nav-item">
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link"
+						href="/pessoa/listar">Listar Usuários</a></td>
+				</li>
+				 <li class="nav-item">
+	        		<a class="nav-link" href="/logout">Sair do Login</a>
+	     		 </li>					 
+	     		 <c:choose>
+					    <c:when test = "${pessoa != null }">
+					        <ul>
+					        <li>Usuário logado</li>
+					        <a href="#" sec:authentication="name" ></a>
+					        </ul>
+					    </c:when>
+				</c:choose> 
+			</ul>
+		</div>
+	</nav>
 	<table class="table">
 		<thead>
 			<tr>
@@ -47,22 +69,23 @@ xmlns:th="http://www.thymeleaf.org"> <!--  colocar isso em toda pagina onde houv
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each = "prato : ${listaDePratos}">
-			    <div th:if="${pratos == null}">
-                <p>Sem Pratos</p>
-				<td th:text="${prato.codigo}"></td>
-				<td th:text="${prato.descricao}"></td>
-				<td th:text="${prato.preco}"></td>
-				<td th:text="${prato.qtd}"></td>
-				<td> <a th:href="@{/carrinho/remover/{codigo}(codigo = ${prato.codigo})}"> <button type="button" class="btn btn-danger">Remover Prato</button></a></td>
+			<tr th:each="prato : ${pratos.entrySet()}">
+				<td th:text="${prato.getKey().codigo}"></td>
+				<td th:text="${prato.getKey().nome}">
+				<td th:text="${prato.getKey().preco}"></td>
+				<td th:text="${prato.getKey().quantidade}"></td>
+				<td><a class="btn btn-danger"
+					th:href="@{/carrinho/remover/{codigo}(codigo = ${prato.getKey().codigo})}">Remover
+						Prato</a></td>
 			</tr>
-			<a th:href="@{'/pedido/comprar/{codigo}'(codigo=${prato.getCodigo})}">
-            	<button type="button" class="btn btn-primary">Comprar</button>
-			<h2 class="col-md-10" th:inline="text">Total do Pedido: [${total}]</h2>
-
+			<a class="btn btn-primary" th:href="@{'/carrinho/finalizar/'}">Comprar</a>
+			<h2 class="col-md-10" th:inline="text">Total do Pedido:
+				[[${total}]]</h2>
 		</tbody>
 	</table>
 
-<script src="/js/bootstrap.min.js"> </script>
+	<script src="/js/bootstrap.min.js">
+		
+	</script>
 </body>
 </html>
